@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ЧМ 2026 — Групповой этап</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #060a08; --bg-elevated: #0d1510;
+      --bg-card: rgba(14, 22, 16, 0.88);
+      --fg: #e4ebe6; --fg-dim: #a3b5a8; --muted: #5a6e5f;
+      --accent: #00e676; --orange: #ff9100;
+      --border: rgba(255,255,255,0.06);
+      --border-accent: rgba(0,230,118,0.2);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg); color: var(--fg);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse at 15% 0%, rgba(0,230,118,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 100%, rgba(0,230,118,0.025) 0%, transparent 50%);
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: 64px 64px; pointer-events: none; z-index: 0;
+    }
+    .font-display { font-family: 'Oswald', sans-serif; }
+    .group-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; backdrop-filter: blur(16px);
+      overflow: hidden; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      animation: cardIn 0.5s ease both;
+    }
+    .group-card:hover {
+      border-color: var(--border-accent); transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,230,118,0.07);
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .group-table { width: 100%; border-collapse: collapse; min-width: 420px; }
+    .group-table th {
+      font-family: 'Oswald', sans-serif; font-weight: 500;
+      font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); padding: 9px 6px; text-align: center;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    .group-table th:first-child { text-align: left; padding-left: 14px; }
+    .group-table td {
+      padding: 9px 6px; text-align: center; font-size: 0.82rem;
+      font-variant-numeric: tabular-nums;
+      border-bottom: 1px solid rgba(255,255,255,0.02); white-space: nowrap;
+    }
+    .group-table td:first-child { text-align: left; padding-left: 14px; }
+    .group-table tr:last-child td { border-bottom: none; }
+    .zone-bar {
+      width: 3px; border-radius: 2px; position: absolute;
+      left: 0; top: 5px; bottom: 5px;
+    }
+    .zone-advance { background: var(--accent); box-shadow: 0 0 6px rgba(0,230,118,0.3); }
+    .zone-playoff { background: var(--orange); box-shadow: 0 0 6px rgba(255,145,0,0.2); }
+    .zone-out { background: var(--muted); opacity: 0.25; }
+    .team-row { position: relative; transition: background 0.2s; }
+    .team-row:hover { background: rgba(255,255,255,0.025); }
+    .team-badge {
+      width: 30px; height: 30px; border-radius: 7px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'Oswald', sans-serif; font-weight: 600;
+      font-size: 0.68rem; color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4); flex-shrink: 0;
+    }
+    .match-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 14px; font-size: 0.78rem;
+      border-bottom: 1px solid rgba(255,255,255,0.02); transition: background 0.15s;
+    }
+    .match-item:last-child { border-bottom: none; }
+    .match-item:hover { background: rgba(255,255,255,0.015); }
+    .match-score {
+      font-family: 'Oswald', sans-serif; font-weight: 600;
+      font-size: 0.88rem; min-width: 44px; text-align: center;
+    }
+    .match-upcoming .match-score { color: var(--muted); }
+    .match-date { font-size: 0.68rem; color: var(--muted); min-width: 50px; flex-shrink: 0; }
+    .match-time { font-size: 0.68rem; color: var(--orange); min-width: 38px; flex-shrink: 0; font-weight: 500; }
+    .matches-toggle {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px; font-size: 0.73rem; color: var(--muted);
+      cursor: pointer; border-top: 1px solid var(--border);
+      transition: color 0.2s, background 0.2s; user-select: none;
+    }
+    .matches-toggle:hover { color: var(--accent); background: rgba(0,230,118,0.03); }
+    .matches-toggle i { transition: transform 0.35s ease; font-size: 0.6rem; }
+    .matches-toggle.open i { transform: rotate(180deg); }
+    .matches-list { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .matches-list.open { max-height: 600px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .status-dot.live { background: var(--accent); animation: pulse 2s ease infinite; }
+    .status-dot.api { background: #22d3ee; }
+    .status-dot.error { background: #ef4444; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,230,118,0.4); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 7px rgba(0,230,118,0); }
+    }
+    .legend-bar { width: 14px; height: 4px; border-radius: 2px; display: inline-block; vertical-align: middle; }
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 20px;
+      background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.25);
+      font-size: 0.68rem; font-weight: 600; color: var(--accent);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .live-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 1.5s ease infinite; }
+    .next-match-highlight { background: rgba(255,145,0,0.06) !important; border-left: 2px solid var(--orange) !important; }
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      padding: 14px 22px; background: var(--bg-elevated);
+      border: 1px solid var(--border-accent); border-radius: 12px;
+      font-size: 0.85rem; color: var(--fg);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      z-index: 1000; transform: translateY(100px); opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1); pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+    @media (max-width: 640px) {
+      .group-table th, .group-table td { padding: 7px 4px; font-size: 0.74rem; }
+      .group-table th:first-child, .group-table td:first-child { padding-left: 10px; }
+      .team-badge { width: 26px; height: 26px; font-size: 0.6rem; border-radius: 5px; }
+      .match-item { padding: 6px 10px; font-size: 0.72rem; gap: 5px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .group-card { animation: none !important; }
+      .status-dot.live, .live-badge-dot { animation: none !important; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="relative z-10">
+    <header class="px-4 sm:px-8 pt-8 pb-6 max-w-[1480px] mx-auto">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+        <div>
+          <div class="flex items-center gap-3 mb-2.5">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #00e676, #00c853);">
+              <i class="fa-solid fa-futbol text-lg" style="color: #060a08;"></i>
+            </div>
+            <span class="font-display text-xs tracking-[0.22em] uppercase" style="color: var(--muted);">FIFA World Cup 2026</span>
+            <div class="live-badge"><span class="live-badge-dot"></span>LIVE</div>
+          </div>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-none">Групповой этап</h1>
+          <p class="mt-2 text-sm" style="color: var(--fg-dim);">США, Канада, Мексика — июнь-июль 2026</p>
+        </div>
+        <div class="flex items-center gap-4 flex-shrink-0">
+          <div class="text-right">
+            <div class="flex items-center gap-2 justify-end">
+              <span class="status-dot live" id="status-dot"></span>
+              <span class="text-xs" id="status-text" style="color: var(--muted);">Загрузка...</span>
+            </div>
+            <div class="text-xs mt-1" id="updated-at" style="color: var(--muted);"></div>
+          </div>
+          <button onclick="refreshData()" id="refresh-btn" class="px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 transition-all" style="border: 1px solid var(--border); background: var(--bg-elevated); color: var(--fg-dim);" onmouseover="this.style.color='var(--accent)';this.style.borderColor='var(--border-accent)'" onmouseout="this.style.color='var(--fg-dim)';this.style.borderColor='var(--border)'">
+            <i class="fa-solid fa-arrows-rotate text-xs" id="refresh-icon"></i>
+            Обновить
+          </button>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-5 mt-6 pt-5" style="border-top: 1px solid var(--border);">
+        <div class="flex items-center gap-2 text-xs" style="color: var(--fg-dim);"><span class="legend-bar" style="background: var(--accent);"></span> Выход в 1/8 (1-2 место)</div>
+        <div class="flex items-center gap-2 text-xs" style="color: var(--fg-dim);"><span class="legend-bar" style="background: var(--orange);"></span> Лучшие 8 третьих мест</div>
+        <div class="flex items-center gap-2 text-xs" style="color: var(--fg-dim);"><span class="legend-bar" style="background: var(--muted); opacity: 0.25;"></span> Вылет</div>
+        <div class="ml-auto text-xs" style="color: var(--muted);" id="tour-info"></div>
+      </div>
+    </header>
+    <main class="px-4 sm:px-8 pb-16 max-w-[1480px] mx-auto">
+      <div id="groups-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+    </main>
+  </div>
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function teamColor(name) {
+      let h = 0;
+      for (let i = 0; i < name.length; i++) h = name.charCodeAt(i) + ((h << 5) - h);
+      return `hsl(${((h % 360) + 360) % 360}, 48%, 36%)`;
+    }
+    function teamAbbr(name) {
+      const s = {"Южная Корея":"ЮЖК","Н. Зеландия":"НЗЛ","Кот-д'Ивуар":"КДИ","Сауд. Аравия":"САА","США":"USA","Уэльс":"WAL"};
+      if (s[name]) return s[name];
+      if (/^[A-Z]+$/i.test(name)) return name.substring(0,3).toUpperCase();
+      const w = name.split(/[\s'-]+/);
+      if (w.length >= 2) return (w[0][0]+w[1][0]+(w[2]?w[2][0]:w[0][1])).toUpperCase();
+      return name.substring(0,3).toUpperCase();
+    }
+    function fmtDate(ds) {
+      if (!ds) return '';
+      const d = new Date(ds);
+      const m = ["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
+      return `${d.getDate()} ${m[d.getMonth()]}`;
+    }
+    function fmtTime(ds) {
+      if (!ds) return '';
+      const d = new Date(ds);
+      return `${String(d.getUTCHours()).padStart(2,'0')}:${String(d.getUTCMinutes()).padStart(2,'0')}`;
+    }
+
+    // Парсинг data.json от football-data.org
+    function parseApiData(json) {
+      const groupsMap = {};
+      json.matches.forEach(m => {
+        const gn = m.group || '';
+        const letter = gn.replace('GROUP ','');
+        if (!letter || letter.length > 2) return;
+        if (!groupsMap[letter]) groupsMap[letter] = { name: letter, teamsMap: {}, matches: [] };
+        const g = groupsMap[letter];
+        const home = m.homeTeam.shortName || m.homeTeam.name;
+        const away = m.awayTeam.shortName || m.awayTeam.name;
+        for (const t of [home, away]) {
+          if (!g.teamsMap[t]) g.teamsMap[t] = { name: t, played:0, won:0, drawn:0, lost:0, gf:0, ga:0, pts:0 };
+        }
+        const status = m.status;
+        const isDone = (status === 'FINISHED');
+        const date = m.utcDate;
+        const time = fmtTime(date);
+        const dateStr = fmtDate(date);
+        if (isDone) {
+          const hs = m.score.fullTime.home;
+          const as = m.score.fullTime.away;
+          g.matches.push({ home, away, hs, as, date: dateStr, time: null, status: 'completed' });
+          const ht = g.teamsMap[home], at = g.teamsMap[away];
+          ht.played++; at.played++;
+          ht.gf += hs; ht.ga += as;
+          at.gf += as; at.ga += hs;
+          if (hs > as)      { ht.won++; ht.pts += 3; at.lost++; }
+          else if (hs < as) { at.won++; at.pts += 3; ht.lost++; }
+          else              { ht.drawn++; at.drawn++; ht.pts++; at.pts++; }
+        } else {
+          g.matches.push({ home, away, hs: null, as: null, date: dateStr, time, status: 'upcoming' });
+        }
+      });
+      const groups = Object.values(groupsMap).map(g => {
+        g.teams = Object.values(g.teams).sort((a,b) => {
+          if (b.pts !== a.pts) return b.pts - a.pts;
+          return (b.gf-b.ga) - (a.gf-a.ga) || b.gf - a.gf;
+        });
+        g.matches.sort((a,b) => a.status === 'completed' ? -1 : 1);
+        delete g.teamsMap;
+        return g;
+      });
+      groups.sort((a,b) => a.name.localeCompare(b.name));
+      return groups;
+    }
+
+    function renderGroups(groups) {
+      const grid = document.getElementById('groups-grid');
+      grid.innerHTML = '';
+      const allDone = groups.reduce((s,g) => s + g.matches.filter(m=>m.status==='completed').length, 0);
+      const total = groups.reduce((s,g) => s + g.matches.length, 0);
+      document.getElementById('tour-info').textContent = `Сыграно ${allDone} из ${total} матчей`;
+
+      groups.forEach((group, gi) => {
+        const card = document.createElement('div');
+        card.className = 'group-card';
+        card.style.animationDelay = `${gi * 0.05}s`;
+        const done = group.matches.filter(m=>m.status==='completed').length;
+        const tour = Math.min(Math.ceil(done/2)+1, 3);
+
+        const rows = group.teams.map((t, i) => {
+          const diff = t.gf - t.ga;
+          const ds = diff > 0 ? `+${diff}` : `${diff}`;
+          const zone = i < 2 ? 'advance' : i === 2 ? 'playoff' : 'out';
+          return `<tr class="team-row"><td style="padding-left:14px;position:relative;"><div class="zone-bar zone-${zone}"></div><div class="flex items-center gap-2.5"><div class="team-badge" style="background:${teamColor(t.name)}">${teamAbbr(t.name)}</div><span class="font-medium" style="font-size:0.82rem;">${t.name}</span></div></td><td>${t.played}</td><td>${t.won}</td><td>${t.drawn}</td><td>${t.lost}</td><td style="color:var(--fg-dim);">${t.gf}:${t.ga} <span style="color:var(--muted);font-size:0.72rem;margin-left:2px;">(${ds})</span></td><td style="font-weight:600;color:${t.pts>0?'var(--fg)':'var(--muted)'};">${t.pts}</td></tr>`;
+        }).join('');
+
+        const items = group.matches.map(m => {
+          if (m.status === 'completed') {
+            return `<div class="match-item"><span class="match-date" style="min-width:auto;"></span><span class="flex-1 text-right" style="color:var(--fg-dim);">${m.home}</span><span class="match-score" style="color:var(--accent);">${m.hs} : ${m.as}</span><span class="flex-1" style="color:var(--fg-dim);">${m.away}</span></div>`;
+          }
+          return `<div class="match-item match-upcoming next-match-highlight"><span class="match-date">${m.date}</span><span class="match-time">${m.time} MSK</span><span class="flex-1 text-right" style="color:var(--fg-dim);">${m.home}</span><span class="match-score">&mdash;</span><span class="flex-1" style="color:var(--fg-dim);">${m.away}</span></div>`;
+        }).join('');
+
+        card.innerHTML = `<div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--border);"><span class="font-display text-lg font-semibold tracking-wide" style="color:var(--accent);">Группа ${group.name}</span><span class="font-display tracking-wider" style="font-size:0.65rem;color:var(--muted);">ТУР ${tour}/3</span></div><div class="table-wrap"><table class="group-table"><thead><tr><th>Команда</th><th>М</th><th>В</th><th>Н</th><th>П</th><th>Мячи</th><th>О</th></tr></thead><tbody>${rows}</tbody></table></div><div class="matches-toggle" onclick="toggleMatches(this)" role="button" tabindex="0" aria-label="Матчи группы ${group.name}" onkeydown="if(event.key==='Enter')this.click()"><i class="fa-solid fa-chevron-down"></i><span>Матчи группы</span></div><div class="matches-list">${items}</div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleMatches(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('open'); }
+
+    async function loadData() {
+      const dot = document.getElementById('status-dot');
+      const txt = document.getElementById('status-text');
+      const dt  = document.getElementById('updated-at');
+      try {
+        const resp = await fetch('./data.json?_t=' + Date.now(), { cache: 'no-store' });
+        if (resp.ok) {
+          const json = await resp.json();
+          if (json.matches && json.matches.length > 0) {
+            const groups = parseApiData(json);
+            if (groups.length > 0) {
+              dot.className = 'status-dot api';
+              txt.textContent = 'Данные из football-data.org';
+              dt.textContent = json.updatedAt ? 'Обновлено: ' + new Date(json.updatedAt).toLocaleString('ru-RU') : '';
+              renderGroups(groups);
+              return;
+            }
+          }
+        }
+      } catch(e) {}
+      dot.className = 'status-dot error';
+      txt.textContent = 'data.json не найден — запустите обновление';
+      dt.textContent = 'Нажмите кнопку ниже или дождитесь автоматического обновления';
+      document.getElementById('groups-grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted);"><i class="fa-solid fa-satellite-dish" style="font-size:2.5rem;opacity:0.3;display:block;margin-bottom:16px;"></i><p>Ожидаются данные от API.<br>Первое обновление произойдёт автоматически через несколько минут.</p></div>';
+    }
+
+    async function refreshData() {
+      const icon = document.getElementById('refresh-icon');
+      icon.classList.add('fa-spin');
+      await loadData();
+      icon.classList.remove('fa-spin');
+      showToast('Попытка загрузки данных...');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    setInterval(loadData, 120000);
+    document.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>
