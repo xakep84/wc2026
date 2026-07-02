@@ -1,4 +1,5 @@
-permissions: contents: write
+permissions:
+  contents: write
 
 name: Обновить ЧМ 2026
 
