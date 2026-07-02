@@ -267,7 +267,8 @@
     function renderPlayoffs(rounds){
       const section=document.getElementById('playoff-section');
       const grid=document.getElementById('playoff-grid');
-      const mds=Object.keys(rounds).map(Number).sort((a,b)=>a-b);
+      const ORDER={'LAST_16':1,'QUARTER_FINALS':2,'SEMI_FINALS':3,'THIRD_PLACE':4,'FINAL':5};
+      const mds=Object.keys(rounds).sort((a,b)=>(ORDER[a]||99)-(ORDER[b]||99));
       if(mds.length===0){section.style.display='none';return}
       section.style.display='block';
       grid.innerHTML=mds.map((md,ri)=>{
