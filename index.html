@@ -223,7 +223,7 @@
     }
 
     /* ===== ПАРСИНГ ПЛЕЙ-ОФФ ===== */
-    const ROUND_NAMES={'LAST_16':'1/8 финала','QUARTER_FINALS':'1/4 финала','SEMI_FINALS':'1/2 финала','FINAL':'Финал','THIRD_PLACE':'Матч за 3-е место'};
+    const ROUND_NAMES={'LAST_16':'1/8 финала','QUARTER_FINALS':'1/4 финала','SEMI_FINALS':'1/2 финала','FINAL':'Финал','THIRD_PLACE':'Матч за 3-е'};
     function roundName(st){return ROUND_NAMES[st]||st}
     function parsePlayoffs(matches){
       const rounds={};
@@ -265,7 +265,7 @@
     }
 
     /* ===== РЕНДЕР ПЛЕЙ-ОФФ ===== */
-    function renderPlayoffs(rounds){
+     function renderPlayoffs(rounds){
       const section=document.getElementById('playoff-section');
       const grid=document.getElementById('playoff-grid');
       const ORDER={'LAST_16':1,'QUARTER_FINALS':2,'SEMI_FINALS':3,'THIRD_PLACE':4,'FINAL':5};
@@ -275,14 +275,15 @@
       grid.innerHTML=mds.map((md,ri)=>{
         const matches=rounds[md].sort((a,b)=>new Date(a.date)-new Date(b.date));
         const cards=matches.map(m=>{
+          const h=m.home||'—';const a=m.away||'—';
           if(m.status==='completed'){
             const hw=m.winner===m.home?' winner':'';
             const aw=m.winner===m.away?' winner':'';
-            return`<div class="playoff-match"><span class="playoff-team${hw}">${m.home}</span><span class="playoff-score" style="color:var(--accent)">${m.hs} : ${m.as}</span><span class="playoff-team${aw}">${m.away}</span></div>`;
+            return'<div class="playoff-match"><span class="playoff-team'+hw+'">'+h+'</span><span class="playoff-score" style="color:var(--accent)">'+m.hs+' : '+m.as+'</span><span class="playoff-team'+aw+'">'+a+'</span></div>';
           }
-          return`<div class="playoff-match playoff-upcoming"><span class="playoff-date">${fmtDate(m.date)}</span><span class="playoff-time">${fmtTime(m.date)} MSK</span><span class="playoff-team">${m.home}</span><span class="playoff-score">&mdash;</span><span class="playoff-team">${m.away}</span></div>`;
+          return'<div class="playoff-match playoff-upcoming" style="flex-direction:column;align-items:stretch;gap:4px"><div style="font-size:.65rem"><span style="color:var(--muted)">'+fmtDate(m.date)+'</span>&nbsp;&nbsp;<span style="color:var(--orange);font-weight:500">'+fmtTime(m.date)+' MSK</span></div><div style="display:flex;align-items:center;gap:8px"><span class="playoff-team" style="flex:1;text-align:right">'+h+'</span><span class="playoff-score">&mdash;</span><span class="playoff-team" style="flex:1">'+a+'</span></div></div>';
         }).join('');
-        return`<div class="playoff-card" style="animation-delay:${ri*.08}s"><div class="playoff-round-header">${roundName(md)}</div>${cards}</div>`;
+        return'<div class="playoff-card" style="animation-delay:'+ri*.08+'s"><div class="playoff-round-header">'+roundName(md)+'</div>'+cards+'</div>';
       }).join('');
     }
 
