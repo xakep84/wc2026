@@ -1,5 +1,7 @@
 name: Обновить ЧМ 2026
 
+permissions: contents: write
+
 on:
   schedule:
     - cron: '0 * * * *'
