@@ -222,13 +222,13 @@
     }
 
     /* ===== ПАРСИНГ ПЛЕЙ-ОФФ ===== */
-    const ROUND_NAMES={4:'1/8 финала',5:'1/4 финала',6:'1/2 финала',7:'Финал'};
-    function roundName(md){return ROUND_NAMES[md]||`Раунд ${md}`}
+    const ROUND_NAMES={'LAST_16':'1/8 финала','QUARTER_FINALS':'1/4 финала','SEMI_FINALS':'1/2 финала','FINAL':'Финал','THIRD_PLACE':'Матч за 3-е место'};
+    function roundName(st){return ROUND_NAMES[st]||st}
     function parsePlayoffs(matches){
       const rounds={};
       matches.forEach(m=>{
         if(m.group)return;
-        const md=m.matchday;if(!md)return;
+        const md=m.stage;if(!md)return;
         if(!rounds[md])rounds[md]=[];
         const home=teamRu(m.homeTeam.name);const away=teamRu(m.awayTeam.name);
         const isDone=m.status==='FINISHED';
