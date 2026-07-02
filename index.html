@@ -221,7 +221,7 @@
       const groupsMap = {};
       json.matches.forEach(m => {
         const gn = m.group || '';
-        const letter = gn.replace('GROUP ','');
+        const letter = gn.replace('GROUP_','');
         if (!letter || letter.length > 2) return;
         if (!groupsMap[letter]) groupsMap[letter] = { name: letter, teamsMap: {}, matches: [] };
         const g = groupsMap[letter];
