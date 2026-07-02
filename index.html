@@ -297,7 +297,7 @@
           dt.textContent=json.updatedAt?'Обновлено: '+new Date(json.updatedAt).toLocaleString('ru-RU'):'';
           renderGroups(groups);renderPlayoffs(playoffs);return;
         }}
-      }catch(e){}
+      }catch(e){console.error('ОШИБКА:',e)}
       dot.className='status-dot error';txt.textContent='data.json не найден';
       dt.textContent='Дождитесь автоматического обновления';
       document.getElementById('groups-grid').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted)"><i class="fa-solid fa-satellite-dish" style="font-size:2.5rem;opacity:.3;display:block;margin-bottom:16px"></i><p>Ожидаются данные от API.<br>Первое обновление произойдёт автоматически.</p></div>';
