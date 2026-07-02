@@ -1,6 +1,6 @@
-name: Обновить ЧМ 2026
-
 permissions: contents: write
+
+name: Обновить ЧМ 2026
 
 on:
   schedule:
