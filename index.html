@@ -251,7 +251,7 @@
         }
       });
       const groups = Object.values(groupsMap).map(g => {
-        g.teams = Object.values(g.teams).sort((a,b) => {
+        g.teams = Object.values(g.teamsMap).sort((a,b) => {
           if (b.pts !== a.pts) return b.pts - a.pts;
           return (b.gf-b.ga) - (a.gf-a.ga) || b.gf - a.gf;
         });
