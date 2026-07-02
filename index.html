@@ -131,7 +131,8 @@
       "Romania":"Румыния","Hungary":"Венгрия","Slovakia":"Словакия","Slovenia":"Словения",
       "Greece":"Греция","Russia":"Россия","Republic of Ireland":"Ирландия",
       "Ireland":"Ирландия","North Macedonia":"С. Македония",
-      "Bosnia and Herzegovina":"Босния","Moldova":"Молдова","Belarus":"Беларусь",
+      "Bosnia and Herzegovina":"Босния","Moldova":"Молдова","Belarus":"Беларусь", 
+      "Bosnia-Herzegovina":"Босния и Герцеговина",
       "Georgia":"Грузия","Albania":"Албания","Montenegro":"Черногория",
       "Iceland":"Исландия","Bulgaria":"Болгария","Lithuania":"Литва",
       "Latvia":"Латвия","Estonia":"Эстония","Armenia":"Армения",
@@ -256,7 +257,7 @@
         }).join('');
         const items=group.matches.map(m=>{
           if(m.status==='completed')return`<div class="match-item"><span class="match-date" style="min-width:auto"></span><span class="flex-1 text-right" style="color:var(--fg-dim)">${m.home}</span><span class="match-score" style="color:var(--accent)">${m.hs} : ${m.as}</span><span class="flex-1" style="color:var(--fg-dim)">${m.away}</span></div>`;
-          return`<div class="match-item match-upcoming next-match-highlight"><span class="match-date">${m.date}</span><span class="match-time">${m.time} MSK</span><span class="flex-1 text-right" style="color:var(--fg-dim)">${m.home}</span><span class="match-score">&mdash;</span><span class="flex-1" style="color:var(--fg-dim)">${m.away}</span></div>`;
+          return`<div class="playoff-match playoff-upcoming" style="flex-wrap:wrap;gap:3px 0"><div style="width:100%;font-size:.65rem"><span style="color:var(--muted)">${fmtDate(m.date)}</span> <span style="color:var(--orange);font-weight:500">${fmtTime(m.date)} MSK</span></div><div style="display:flex;align-items:center;width:100%;gap:8px"><span class="playoff-team" style="flex:1;text-align:right">${m.home}</span><span class="playoff-score">&mdash;</span><span class="playoff-team" style="flex:1">${m.away}</span></div></div>`;
         }).join('');
         card.innerHTML=`<div class="flex items-center justify-between px-4 py-3" style="border-bottom:1px solid var(--border)"><span class="font-display text-lg font-semibold tracking-wide" style="color:var(--accent)">Группа ${group.name}</span><span class="font-display tracking-wider" style="font-size:.65rem;color:var(--muted)">ТУР ${tour}/3</span></div><div class="table-wrap"><table class="group-table"><thead><tr><th>Команда</th><th>М</th><th>В</th><th>Н</th><th>П</th><th>Мячи</th><th>О</th></tr></thead><tbody>${rows}</tbody></table></div><div class="matches-toggle" onclick="toggleMatches(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')this.click()"><i class="fa-solid fa-chevron-down"></i><span>Матчи группы</span></div><div class="matches-list">${items}</div>`;
         grid.appendChild(card);
