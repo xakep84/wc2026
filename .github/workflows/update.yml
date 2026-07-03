@@ -1,5 +1,7 @@
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 name: Обновить ЧМ 2026
 
@@ -7,10 +9,14 @@ on:
   schedule:
     - cron: '0 */6 * * *'
   workflow_dispatch:
+  repository_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,5 +33,13 @@ jobs:
           git config user.name "WC2026 Bot"
           git config user.email "bot@wc2026.local"
           git add data.json
-          git diff --staged --quiet || git commit -m "Обновление $(date -u +%Y-%m-%d_%H:%M)"
-          git push
+          git diff --staged --quiet || git commit -m "Обновление $(date -u +%Y-%m-%d_%H:%M)" && git push
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - name: Deploy
+        id: deploy
+        uses: actions/deploy-pages@v4
