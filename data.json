@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-04T13:00:58.967531+00:00",
+  "updatedAt": "2026-07-04T15:46:08.711640+00:00",
   "matches": [
     {
       "area": {
@@ -5734,7 +5734,7 @@
       "matchday": null,
       "stage": "LAST_32",
       "group": null,
-      "lastUpdated": "2026-07-04T12:15:33Z",
+      "lastUpdated": "2026-07-04T13:25:01Z",
       "homeTeam": {
         "id": 762,
         "name": "Argentina",
@@ -5904,7 +5904,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 11605,
+          "name": "Michael Oliver",
+          "type": "REFEREE",
+          "nationality": "England"
+        }
+      ]
     },
     {
       "area": {
