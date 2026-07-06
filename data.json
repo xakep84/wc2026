@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-06T19:01:05.380900+00:00",
+  "updatedAt": "2026-07-06T22:47:50.842427+00:00",
   "matches": [
     {
       "area": {
@@ -6134,11 +6134,11 @@
       },
       "id": 537379,
       "utcDate": "2026-07-06T19:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": null,
       "stage": "LAST_16",
       "group": null,
-      "lastUpdated": "2026-07-06T05:20:12Z",
+      "lastUpdated": "2026-07-06T21:06:44Z",
       "homeTeam": {
         "id": 765,
         "name": "Portugal",
@@ -6154,15 +6154,15 @@
         "crest": "https://crests.football-data.org/760.svg"
       },
       "score": {
-        "winner": null,
+        "winner": "AWAY_TEAM",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 1
         },
         "halfTime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
         }
       },
       "odds": {
@@ -6234,7 +6234,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 129250,
+          "name": "Adham Makhadmeh",
+          "type": "REFEREE",
+          "nationality": "Jordan"
+        }
+      ]
     },
     {
       "area": {
