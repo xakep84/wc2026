@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-06T22:47:50.842427+00:00",
+  "updatedAt": "2026-07-07T01:01:04.862291+00:00",
   "matches": [
     {
       "area": {
@@ -6200,11 +6200,11 @@
       },
       "id": 537380,
       "utcDate": "2026-07-07T00:00:00Z",
-      "status": "TIMED",
+      "status": "PAUSED",
       "matchday": null,
       "stage": "LAST_16",
       "group": null,
-      "lastUpdated": "2026-07-06T05:20:12Z",
+      "lastUpdated": "2026-07-07T00:58:54Z",
       "homeTeam": {
         "id": 771,
         "name": "United States",
@@ -6220,15 +6220,15 @@
         "crest": "https://crests.football-data.org/805.svg"
       },
       "score": {
-        "winner": null,
+        "winner": "AWAY_TEAM",
         "duration": "REGULAR",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 2
         },
         "halfTime": {
-          "home": null,
-          "away": null
+          "home": 1,
+          "away": 2
         }
       },
       "odds": {
