@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-07T19:16:48.550126+00:00",
+  "updatedAt": "2026-07-08T01:01:05.583710+00:00",
   "matches": [
     {
       "area": {
@@ -6270,7 +6270,7 @@
       "matchday": null,
       "stage": "LAST_16",
       "group": null,
-      "lastUpdated": "2026-07-07T18:15:15Z",
+      "lastUpdated": "2026-07-07T22:56:42Z",
       "homeTeam": {
         "id": 762,
         "name": "Argentina",
@@ -6332,11 +6332,11 @@
       },
       "id": 537382,
       "utcDate": "2026-07-07T20:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": null,
       "stage": "LAST_16",
       "group": null,
-      "lastUpdated": "2026-07-07T05:20:11Z",
+      "lastUpdated": "2026-07-07T22:57:22Z",
       "homeTeam": {
         "id": 788,
         "name": "Switzerland",
@@ -6353,14 +6353,26 @@
       },
       "score": {
         "winner": null,
-        "duration": "REGULAR",
+        "duration": "PENALTY_SHOOTOUT",
         "fullTime": {
-          "home": null,
-          "away": null
+          "home": 4,
+          "away": 3
         },
         "halfTime": {
-          "home": null,
-          "away": null
+          "home": 0,
+          "away": 0
+        },
+        "regularTime": {
+          "home": 0,
+          "away": 0
+        },
+        "extraTime": {
+          "home": 0,
+          "away": 0
+        },
+        "penalties": {
+          "home": 3,
+          "away": 3
         }
       },
       "odds": {
