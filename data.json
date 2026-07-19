@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-19T15:33:11.623927+00:00",
+  "updatedAt": "2026-07-19T19:00:42.197766+00:00",
   "matches": [
     {
       "area": {
@@ -6922,7 +6922,14 @@
       "odds": {
         "msg": "Activate Odds-Package in User-Panel to retrieve odds."
       },
-      "referees": []
+      "referees": [
+        {
+          "id": 9351,
+          "name": "Slavko Vinčič",
+          "type": "REFEREE",
+          "nationality": "Slovenia"
+        }
+      ]
     }
   ]
 }
